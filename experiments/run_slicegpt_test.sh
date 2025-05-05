@@ -1,8 +1,8 @@
 #!/bin/bash
 # conda activate slicegpt
-
-MODEL_NAME_OR_PATH=$1
-SPARSITY=$2
+export CUDA_VISIBLE_DEVICES=1
+MODEL_NAME_OR_PATH="meta-llama/Llama-3.1-8B"
+SPARSITY=0.2
 SAVE_DIR=pruned/${MODEL_NAME_OR_PATH//\//-}_sparsity_${SPARSITY}
 LOG_PATH=logs/${MODEL_NAME_OR_PATH//\//-}_sparsity_${SPARSITY}_pruned.log
 mkdir -p $SAVE_DIR
@@ -14,4 +14,4 @@ python run_slicegpt.py \
         --sparsity ${SPARSITY} \
         --device cuda:0 \
         --eval-baseline \
-        --no-wandb > ${LOG_PATH}
+        --no-wandb 

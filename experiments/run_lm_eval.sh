@@ -1,10 +1,18 @@
 #!/bin/bash
 # conda activate slicegpt
 
-export CUDA_VISIBLE_DEVICES=1
+#!/bin/bash
+# conda activate slicegpt
+
+MODEL_NAME_OR_PATH=$1
+SPARSITY=$2
+SAVE_DIR=pruned/${MODEL_NAME_OR_PATH//\//-}_sparsity_${SPARSITY}
+LOG_PATH=logs/${MODEL_NAME_OR_PATH//\//-}_sparsity_${SPARSITY}_pruned.log
+
+
 python run_lm_eval.py \
-    --model meta-llama/Llama-2-7b-hf \
-    --sliced-model-path pruned/Llama-2-7b-hf \
-    --sparsity 0.25 \
-    --tasks  "hellaswag" "arc_challenge" "winogrande" "arc_easy" \
-    --no-wandb > logs/llama2_7b_eval.log 
+    --model ${MODEL_NAME_OR_PATH} \
+    --sliced-model-path ${SAVE_DIR} \
+    --sparsity ${SPARSITY} \
+    --tasks  "boolq" "piqa" "hellaswag" "winogrande" "arc_easy" "arc_challenge" "openbookqa"\
+    --no-wandb >> ${LOG_PATH}
